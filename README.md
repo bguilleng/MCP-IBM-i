@@ -1,6 +1,6 @@
 # IBM i Native MCP Server — Apache + SQLRPGLE + COBOL
 
-Ejemplo de referencia para implementar un servidor MCP (Model Context Protocol) nativo en IBM i sin Node.js, Python, Java, PASE ni librerías externas.
+Ejemplo de referencia para implementar un servidor MCP (Model Context Protocol) nativo en IBM i sin dependencias externas.
 
 ## Objetivo
 

@@ -1,0 +1,32 @@
+# ==================================================================
+# Fragmento orientativo IBM HTTP Server for i
+# Validar directivas exactas en la versión/PTF instalada.
+# ==================================================================
+
+# Endpoint CGI sobre objeto *PGM. Una alternativa habitual es un ScriptAlias
+# a una ruta QSYS.LIB y luego proteger esa localización.
+
+ScriptAlias /mcp/ /QSYS.LIB/MCPLIB.LIB/
+
+<Directory /QSYS.LIB/MCPLIB.LIB>
+    Options +ExecCGI
+    Require all denied
+</Directory>
+
+# Exponer únicamente el programa requerido mediante Location.
+<Location /mcp/MCPHTTP01.PGM>
+    Require all granted
+</Location>
+
+# Ajustar CCSID tras pruebas explícitas de UTF-8 en CGI.
+# CGIJobCCSID 1208
+
+# Evitar respuestas/procesos excesivos.
+Timeout 60
+ScriptTimeout 60
+
+# TLS se configura mediante DCM/Web Administration for i.
+# No usar HTTP en producción.
+
+ErrorLog logs/mcp_error_log
+CustomLog logs/mcp_access_log common

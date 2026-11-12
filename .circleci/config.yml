@@ -1,0 +1,29 @@
+# Structural preflight only; no product acceptance or native IBM i.
+version: 2.1
+jobs:
+  simulated:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: Synthetic fixtures (NOT CERTIFIED)
+          command: python3 .circleci/simulated_ibmi.py --project "MCP-IBM-i" --out reports/simulated
+      - store_test_results:
+          path: reports/simulated
+      - store_artifacts:
+          path: reports/simulated
+  preflight:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: Repository structural validation only
+          command: |
+            python3 -c 'import json,pathlib; files=list(pathlib.Path("tests").glob("*.json")); assert files; [json.loads(p.read_text(encoding="utf-8")) for p in files]'
+workflows:
+  on_change:
+    jobs:
+      - simulated
+      - preflight
